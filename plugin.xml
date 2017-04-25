@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" 
+        id="cordova-plugin-stone-sdk" 
+        version="0.1.0">
+
+    <name>Stone SDK</name>
+    <description>Cordova Stone SDK Device Plugin</description>
+
+    <asset src="www/validation_activity.js" target="js/validation_activity.js"/>
+    <asset src="www/transaction_activity.js" target="js/transaction_activity.js"/>
+    <asset src="www/devices_activity.js" target="js/devices_activity.js"/>
+
+    <js-module src="www/validation_activity.js" name="validation_activity">
+        <clobbers target="validation_activity" />
+    </js-module>
+
+    <js-module src="www/transaction_activity.js" name="transaction_activity">
+        <clobbers target="transaction_activity" />
+    </js-module>
+
+    <js-module src="www/devices_activity.js" name="devices_activity">
+        <clobbers target="devices_activity" />
+    </js-module>
+
+    <!-- Android -->
+    <platform name="android">
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="ValidationActivity">
+                <param name="android-package" value="com.stone.sdk.ValidationActivity"/>
+            </feature>
+            <feature name="TransactionActivity">
+                <param name="android-package" value="com.stone.sdk.TransactionActivity"/>
+            </feature>
+            <feature name="DevicesActivity">
+                <param name="android-package" value="com.stone.sdk.DevicesActivity"/>
+            </feature>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+            <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+            <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+            <uses-permission android:name="android.permission.BLUETOOTH" />
+        </config-file>
+
+        <source-file src="src/android/ValidationActivity.java" target-dir="src/com/stone/sdk/"/>
+        <source-file src="src/android/TransactionActivity.java" target-dir="src/com/stone/sdk/"/>
+        <source-file src="src/android/DevicesActivity.java" target-dir="src/com/stone/sdk/"/>
+    </platform>
+
+</plugin>
