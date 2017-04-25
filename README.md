@@ -1,4 +1,4 @@
-# Demo Cordova plugin SDK
+# Demo Cordova plugin
 
 ## LICENSE
 
