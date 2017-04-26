@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" 
-        id="cordova-plugin-stone-sdk" 
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+        id="cordova-plugin-stone-sdk"
         version="0.1.0">
 
     <name>Stone SDK</name>
@@ -18,6 +18,10 @@
         <clobbers target="transaction_activity" />
     </js-module>
 
+    <js-module src="www/transaction_list_activity.js" name="transaction_list_activity">
+        <clobbers target="transaction_list_activity" />
+    </js-module>
+
     <js-module src="www/devices_activity.js" name="devices_activity">
         <clobbers target="devices_activity" />
     </js-module>
@@ -27,15 +31,19 @@
 
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="ValidationActivity">
-                <param name="android-package" value="com.stone.sdk.ValidationActivity"/>
+                <param name="android-package" value="br.com.stone.cordova.sdk.ValidationActivity"/>
             </feature>
             <feature name="TransactionActivity">
-                <param name="android-package" value="com.stone.sdk.TransactionActivity"/>
+                <param name="android-package" value="br.com.stone.cordova.sdk.TransactionActivity"/>
+            </feature>
+            <feature name="TransactionListActivity">
+              <param name="android-package" value="br.com.stone.cordova.sdk.TransactionListActivity"/>
             </feature>
             <feature name="DevicesActivity">
-                <param name="android-package" value="com.stone.sdk.DevicesActivity"/>
+                <param name="android-package" value="br.com.stone.cordova.sdk.DevicesActivity"/>
             </feature>
         </config-file>
+
         <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
             <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -46,9 +54,10 @@
             <uses-permission android:name="android.permission.BLUETOOTH" />
         </config-file>
 
-        <source-file src="src/android/ValidationActivity.java" target-dir="src/com/stone/sdk/"/>
-        <source-file src="src/android/TransactionActivity.java" target-dir="src/com/stone/sdk/"/>
-        <source-file src="src/android/DevicesActivity.java" target-dir="src/com/stone/sdk/"/>
+        <source-file src="src/android/ValidationActivity.java" target-dir="src/br/com/stone/cordova/sdk/"/>
+        <source-file src="src/android/TransactionActivity.java" target-dir="src/br/com/stone/cordova/sdk/"/>
+        <source-file src="src/android/TransactionListActivity.java" target-dir="src/br/com/stone/cordova/sdk/"/>
+        <source-file src="src/android/DevicesActivity.java" target-dir="src/br/com/stone/cordova/sdk/"/>
     </platform>
 
 </plugin>

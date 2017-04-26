@@ -1,4 +1,4 @@
-package com.stone.sdk;
+package br.com.stone.cordova.sdk;
 
 import org.apache.cordova.*;
 import org.json.JSONArray;
