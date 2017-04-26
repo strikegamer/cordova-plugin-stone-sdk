@@ -9,6 +9,8 @@
     <asset src="www/validation_activity.js" target="js/validation_activity.js"/>
     <asset src="www/transaction_activity.js" target="js/transaction_activity.js"/>
     <asset src="www/transaction_list_activity.js" target="js/transaction_list_activity.js"/>
+    <asset src="www/transaction_list_activity.js" target="js/transaction_list_activity.js"/>
+    <asset src="www/transaction_item_selected_activity.js" target="js/transaction_item_selected_activity.js"/>
     <asset src="www/devices_activity.js" target="js/devices_activity.js"/>
 
     <js-module src="www/validation_activity.js" name="validation_activity">
@@ -21,6 +23,10 @@
 
     <js-module src="www/transaction_list_activity.js" name="transaction_list_activity">
         <clobbers target="transaction_list_activity" />
+    </js-module>
+
+    <js-module src="www/transaction_item_selected_activity.js" name="transaction_item_selected_activity">
+        <clobbers target="transaction_item_selected_activity" />
     </js-module>
 
     <js-module src="www/devices_activity.js" name="devices_activity">
@@ -40,6 +46,9 @@
             <feature name="TransactionListActivity">
               <param name="android-package" value="br.com.stone.cordova.sdk.TransactionListActivity"/>
             </feature>
+            <feature name="TransactionItemSelectedActivity">
+                <param name="android-package" value="br.com.stone.cordova.sdk.TransactionItemSelectedActivity"/>
+            </feature>
             <feature name="DevicesActivity">
                 <param name="android-package" value="br.com.stone.cordova.sdk.DevicesActivity"/>
             </feature>
@@ -58,6 +67,7 @@
         <source-file src="src/android/ValidationActivity.java" target-dir="src/br/com/stone/cordova/sdk/"/>
         <source-file src="src/android/TransactionActivity.java" target-dir="src/br/com/stone/cordova/sdk/"/>
         <source-file src="src/android/TransactionListActivity.java" target-dir="src/br/com/stone/cordova/sdk/"/>
+        <source-file src="src/android/TransactionItemSelectedActivity.java" target-dir="src/br/com/stone/cordova/sdk/"/>
         <source-file src="src/android/DevicesActivity.java" target-dir="src/br/com/stone/cordova/sdk/"/>
     </platform>
 
