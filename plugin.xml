@@ -8,6 +8,7 @@
 
     <asset src="www/validation_activity.js" target="js/validation_activity.js"/>
     <asset src="www/transaction_activity.js" target="js/transaction_activity.js"/>
+    <asset src="www/transaction_list_activity.js" target="js/transaction_list_activity.js"/>
     <asset src="www/devices_activity.js" target="js/devices_activity.js"/>
 
     <js-module src="www/validation_activity.js" name="validation_activity">

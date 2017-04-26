@@ -35,7 +35,7 @@ public class TransactionActivity extends CordovaPlugin {
             stoneTransaction.setAmount(objectStoneTransaction);
             stoneTransaction.setEmailClient(null);
             stoneTransaction.setRequestId(null);
-            stoneTransaction.setUserModel(GlobalInformations.getUserModel(0));
+            stoneTransaction.setUserModel(Stone.getUserModel(0));
 
             // Numero de parcelas
             String numberStoneTransaction = data.getJSONObject(0).getString("method");
@@ -54,10 +54,10 @@ public class TransactionActivity extends CordovaPlugin {
             }
 
             // Processo para envio da transacao.
-            final TransactionProvider provider = new TransactionProvider(TransactionActivity.this.cordova.getActivity(), stoneTransaction, GlobalInformations.getPinpadFromListAt(0));
-            provider.setWorkInBackground(false);
-            provider.setDialogMessage("Enviando..");
-            provider.setDialogTitle("Aguarde");
+            final TransactionProvider provider = new TransactionProvider(TransactionActivity.this.cordova.getActivity(), stoneTransaction, Stone.getPinpadFromListAt(0));
+            provider.setWorkInBackground(true);
+//            provider.setDialogMessage("Enviando..");
+//            provider.setDialogTitle("Aguarde");
 
             provider.setConnectionCallback(new StoneCallbackInterface() {
                 public void onSuccess() {
