@@ -13,6 +13,7 @@ import stone.application.StoneStart;
 import stone.application.interfaces.StoneCallbackInterface;
 import stone.providers.ActiveApplicationProvider;
 import stone.user.UserModel;
+import stone.utils.Stone;
 
 public class ValidationActivity extends CordovaPlugin {
 
@@ -45,6 +46,7 @@ public class ValidationActivity extends CordovaPlugin {
                 /* Metodo chamado se for executado sem erros */
                 public void onSuccess() {
                     Toast.makeText(ValidationActivity.this.cordova.getActivity(), "Ativado com sucesso, iniciando o aplicativo", Toast.LENGTH_SHORT).show();
+                    Stone.developerMode();
                 }
 
                 /* Metodo chamado caso ocorra alguma excecao */

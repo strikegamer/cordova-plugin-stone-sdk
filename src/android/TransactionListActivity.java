@@ -4,18 +4,10 @@ import org.apache.cordova.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import android.widget.Toast;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import stone.application.interfaces.StoneCallbackInterface;
 import stone.database.transaction.TransactionDAO;
 import stone.database.transaction.TransactionObject;
-import stone.providers.CancellationProvider;
-import stone.providers.PrintProvider;
-import stone.utils.GlobalInformations;
-import stone.utils.PrintObject;
 
 public class TransactionListActivity extends CordovaPlugin {
 
@@ -44,16 +36,9 @@ public class TransactionListActivity extends CordovaPlugin {
             System.out.println("arrayList: " + arrayList);
 
             return true;
-        } else if(action.equals("transactionClicked")) {
-
-            String btnClicked = data.getString(0);
-            System.out.println("btnClicked: " + btnClicked);
-
-            return true;
         } else {
             return false;
         }
     }
-
 
 }

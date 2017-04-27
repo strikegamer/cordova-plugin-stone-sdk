@@ -23,8 +23,10 @@ public class TransactionActivity extends CordovaPlugin {
         if (action.equals("transactionActivity")) {
 
             String object = data.getString(0);
+            System.out.println("object: " + object);
 
             String objectStoneTransaction = data.getJSONObject(0).getString("amount");
+            System.out.println("object: " + objectStoneTransaction);
 
             // Cria o objeto de transacao. Usar o "GlobalInformations.getPinpadFromListAt"
             // significa que devera estar conectado com ao menos um pinpad, pois o metodo
@@ -37,13 +39,16 @@ public class TransactionActivity extends CordovaPlugin {
             stoneTransaction.setRequestId(null);
             stoneTransaction.setUserModel(Stone.getUserModel(0));
 
-            // Numero de parcelas
-            String numberStoneTransaction = data.getJSONObject(0).getString("method");
-
             // Verifica a forma de pagamento selecionada.
-            String methodStoneTransaction = data.getJSONObject(0).getString("instalments");
+            String methodStoneTransaction = data.getJSONObject(0).getString("method");
+            System.out.println("object: " + methodStoneTransaction);
+
+            // Numero de parcelas
+            String numberStoneTransaction = data.getJSONObject(0).getString("instalments");
+            System.out.println("object: " + numberStoneTransaction);
 
             if (methodStoneTransaction.equals("DEBIT")) {
+                stoneTransaction.setInstalmentTransactionEnum(InstalmentTransactionEnum.getAt(0));
                 stoneTransaction.setTypeOfTransaction(TypeOfTransactionEnum.DEBIT);
             } else if (methodStoneTransaction.equals("CREDIT")) {
                 // Informa a quantidade de parcelas.
@@ -56,8 +61,6 @@ public class TransactionActivity extends CordovaPlugin {
             // Processo para envio da transacao.
             final TransactionProvider provider = new TransactionProvider(TransactionActivity.this.cordova.getActivity(), stoneTransaction, Stone.getPinpadFromListAt(0));
             provider.setWorkInBackground(true);
-//            provider.setDialogMessage("Enviando..");
-//            provider.setDialogTitle("Aguarde");
 
             provider.setConnectionCallback(new StoneCallbackInterface() {
                 public void onSuccess() {
@@ -65,7 +68,7 @@ public class TransactionActivity extends CordovaPlugin {
                 }
 
                 public void onError() {
-                    Toast.makeText(TransactionActivity.this.cordova.getActivity(), "Erro na transação", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TransactionActivity.this.cordova.getActivity(), provider.getMessageFromAuthorize(), Toast.LENGTH_SHORT).show();
                     if (provider.theListHasError(ErrorsEnum.NEED_LOAD_TABLES) == true) { // code 20
                         LoadTablesProvider loadTablesProvider = new LoadTablesProvider(TransactionActivity.this.cordova.getActivity(), provider.getGcrRequestCommand(), GlobalInformations.getPinpadFromListAt(0));
                         loadTablesProvider.setDialogMessage("Subindo as tabelas");
