@@ -45,7 +45,6 @@ public class StoneSDK extends CordovaPlugin {
     private static final String TRANSACTION_CANCEL = "transactionCancel";
     private static final String TRANSACTION_LIST = "transactionList";
     private static final String VALIDATION = "validation";
-    private static final String SEND_EMAIL = "sendEmail";
 
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
 
@@ -74,13 +73,6 @@ public class StoneSDK extends CordovaPlugin {
                 Toast.makeText(StoneSDK.this.cordova.getActivity(), "StoneCode já cadastrado", Toast.LENGTH_SHORT).show();
                 return true;
             }
-        } else if (action.equals(SEND_EMAIL)) {
-            if(isNetworkAvailable()) {
-                sendEmail(data);
-            } else {
-                Toast.makeText(StoneSDK.this.cordova.getActivity(), "Não há conexão com internet.", Toast.LENGTH_SHORT).show();
-            }
-            return true;
         } else {
             return false;
         }
@@ -292,44 +284,6 @@ public class StoneSDK extends CordovaPlugin {
         });
 
         provider.execute();
-    }
-
-    private void sendEmail(JSONArray data) throws JSONException {
-        // captura o texto inserido pelo usuario
-        String emailTextSample = data.getString(0);
-        System.out.println("text: " + emailTextSample);
-
-        String emailTo = data.getString(1);
-        System.out.println("email: " + emailTo);
-
-        EmailClient emailClient = new EmailClient("smtp.empresa.com",    // Servidor smtp.
-                "noreply@empresa.com", // Endereco de email (por exemplo, o seu noreply).
-                "123456",              // Senha do email.
-                emailTo,              // Email do destinatário.
-                "TÍTULO DO E-MAIL");   // Título do email a ser enviado.
-        emailClient.setSport("999"); // S Port
-        emailClient.setSmtpPport("999"); // SMTP P Port
-        String receipt = emailTextSample; // Texto digitado pelo usuario.
-
-        SendEmailProvider sendEmailProvider = new SendEmailProvider(StoneSDK.this.cordova.getActivity(), emailClient, receipt);
-        sendEmailProvider.setWorkInBackground(false); // Verifica se vai existir feedback ao usuario ou nao.
-        sendEmailProvider.setDialogMessage("Enviando comprovante");
-        sendEmailProvider.setConnectionCallback(new StoneCallbackInterface() {
-            public void onSuccess() {
-                Toast.makeText(StoneSDK.this.cordova.getActivity(), "Enviado com sucesso", Toast.LENGTH_LONG).show();
-            }
-
-            public void onError() {
-                Toast.makeText(StoneSDK.this.cordova.getActivity(), "Nao enviado", Toast.LENGTH_LONG).show();
-            }
-        });
-        sendEmailProvider.execute();
-    }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) this.cordova.getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }
