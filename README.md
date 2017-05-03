@@ -47,10 +47,10 @@ Este plugin é um exemplo de como utilizar a SDK da Stone no Cordova/Ionic.
 
 - [stone_sdk.validation](#validation)
 - [stone_sdk.device](#device)
-- [stone_sdk.deviceSelected](#deviceSelected)
+- [stone_sdk.deviceSelected](#deviceselected)
 - [stone_sdk.transaction](#transaction)
-- [stone_sdk.transactionList](#transactionList)
-- [stone_sdk.transactionCancel](#transactionCancel)
+- [stone_sdk.transactionList](#transactionlist)
+- [stone_sdk.transactionCancel](#transactioncancel)
 
 
 ## validation
