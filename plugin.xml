@@ -1,56 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         id="cordova-plugin-stone-sdk"
-        version="0.1.0">
+        version="0.2.0">
 
     <name>Stone SDK</name>
     <description>Cordova Stone SDK Device Plugin</description>
 
-    <asset src="www/validation_activity.js" target="js/validation_activity.js"/>
-    <asset src="www/transaction_activity.js" target="js/transaction_activity.js"/>
-    <asset src="www/transaction_list_activity.js" target="js/transaction_list_activity.js"/>
-    <asset src="www/transaction_list_activity.js" target="js/transaction_list_activity.js"/>
-    <asset src="www/transaction_item_selected_activity.js" target="js/transaction_item_selected_activity.js"/>
-    <asset src="www/devices_activity.js" target="js/devices_activity.js"/>
+    <asset src="www/stone_sdk.js" target="js/stone_sdk.js"/>
 
-    <js-module src="www/validation_activity.js" name="validation_activity">
-        <clobbers target="validation_activity" />
-    </js-module>
-
-    <js-module src="www/transaction_activity.js" name="transaction_activity">
-        <clobbers target="transaction_activity" />
-    </js-module>
-
-    <js-module src="www/transaction_list_activity.js" name="transaction_list_activity">
-        <clobbers target="transaction_list_activity" />
-    </js-module>
-
-    <js-module src="www/transaction_item_selected_activity.js" name="transaction_item_selected_activity">
-        <clobbers target="transaction_item_selected_activity" />
-    </js-module>
-
-    <js-module src="www/devices_activity.js" name="devices_activity">
-        <clobbers target="devices_activity" />
+    <js-module src="www/stone_sdk.js" name="stone_sdk">
+        <clobbers target="stone_sdk" />
     </js-module>
 
     <!-- Android -->
     <platform name="android">
 
         <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="ValidationActivity">
-                <param name="android-package" value="br.com.stone.cordova.sdk.ValidationActivity"/>
-            </feature>
-            <feature name="TransactionActivity">
-                <param name="android-package" value="br.com.stone.cordova.sdk.TransactionActivity"/>
-            </feature>
-            <feature name="TransactionListActivity">
-              <param name="android-package" value="br.com.stone.cordova.sdk.TransactionListActivity"/>
-            </feature>
-            <feature name="TransactionItemSelectedActivity">
-                <param name="android-package" value="br.com.stone.cordova.sdk.TransactionItemSelectedActivity"/>
-            </feature>
-            <feature name="DevicesActivity">
-                <param name="android-package" value="br.com.stone.cordova.sdk.DevicesActivity"/>
+            <feature name="StoneSDK">
+                <param name="android-package" value="br.com.stone.cordova.sdk.StoneSDK"/>
             </feature>
         </config-file>
 
@@ -64,11 +31,7 @@
             <uses-permission android:name="android.permission.BLUETOOTH" />
         </config-file>
 
-        <source-file src="src/android/ValidationActivity.java" target-dir="src/br/com/stone/cordova/sdk/"/>
-        <source-file src="src/android/TransactionActivity.java" target-dir="src/br/com/stone/cordova/sdk/"/>
-        <source-file src="src/android/TransactionListActivity.java" target-dir="src/br/com/stone/cordova/sdk/"/>
-        <source-file src="src/android/TransactionItemSelectedActivity.java" target-dir="src/br/com/stone/cordova/sdk/"/>
-        <source-file src="src/android/DevicesActivity.java" target-dir="src/br/com/stone/cordova/sdk/"/>
+        <source-file src="src/android/StoneSDK.java" target-dir="src/br/com/stone/cordova/sdk/"/>
 
         <source-file src="src/android/libs/sdk_stone_2.2.10_fat.jar" target-dir="libs" />
     </platform>
