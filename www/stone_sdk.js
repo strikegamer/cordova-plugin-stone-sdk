@@ -16,5 +16,8 @@ module.exports = {
   },
   validation: function (stoneCodeList, successCallback, errorCallback) {
     cordova.exec(successCallback, errorCallback, "StoneSDK", "validation", [stoneCodeList]);
+  },
+  sendEmail: function (emailTextSample, emailTo, successCallback, errorCallback) {
+    cordova.exec(successCallback, errorCallback, "StoneSDK", "sendEmail", [emailTextSample, emailTo]);
   }
 };
