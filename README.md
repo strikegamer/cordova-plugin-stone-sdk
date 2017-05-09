@@ -39,7 +39,7 @@ Este plugin é um exemplo de como utilizar a SDK da Stone no Cordova/Ionic.
 
 ## Instalação
 
-    $ cordova plugin add https://github.com/don/BluetoothSerial.git
+    $ cordova plugin add https://github.com/stone-pagamentos/plugin-cordova.git
 
 ## API
 
