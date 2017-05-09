@@ -53,13 +53,13 @@ public class StoneSDK extends CordovaPlugin {
             bluetoothList(callbackContext);
             return true;
         } else if (action.equals(DEVICE_SELECTED)) {
-            bluetoothSelected(data);
+            bluetoothSelected(data, callbackContext);
             return true;
         } else if (action.equals(TRANSACTION)) {
-            transaction(data);
+            transaction(data, callbackContext);
             return true;
         } else if (action.equals(TRANSACTION_CANCEL)) {
-            transactionCancel(data);
+            transactionCancel(data, callbackContext);
             return true;
         } else if (action.equals(TRANSACTION_LIST)) {
             transactionList(callbackContext);
@@ -67,7 +67,7 @@ public class StoneSDK extends CordovaPlugin {
         } else if (action.equals(VALIDATION)) {
             List<UserModel> user = StoneStart.init(this.cordova.getActivity());
             if (user == null)  {
-                stoneCodeValidation(data);
+                stoneCodeValidation(data, callbackContext);
                 return true;
             } else {
                 Toast.makeText(StoneSDK.this.cordova.getActivity(), "StoneCode já cadastrado", Toast.LENGTH_SHORT).show();
@@ -106,7 +106,7 @@ public class StoneSDK extends CordovaPlugin {
         }
     }
 
-    private void bluetoothSelected(JSONArray data) throws JSONException {
+    private void bluetoothSelected(JSONArray data, CallbackContext callbackContext) throws JSONException {
         // Pega o pinpad selecionado.
         String arrayList = data.getString(0);
 
@@ -132,10 +132,11 @@ public class StoneSDK extends CordovaPlugin {
             }
 
         });
+        callbackContext.success();
         bluetoothConnectionProvider.execute(); // Executa o provider de conexão bluetooth.
     }
 
-    private void stoneCodeValidation(JSONArray data) throws JSONException {
+    private void stoneCodeValidation(JSONArray data, CallbackContext callbackContext) throws JSONException {
         List<String> stoneCodeList = new ArrayList<String>();
 
         // Adicione seu Stonecode abaixo, como string.
@@ -155,7 +156,6 @@ public class StoneSDK extends CordovaPlugin {
             /* Metodo chamado se for executado sem erros */
             public void onSuccess() {
                 Toast.makeText(StoneSDK.this.cordova.getActivity(), "Ativado com sucesso, iniciando o aplicativo", Toast.LENGTH_SHORT).show();
-                Stone.developerMode();
             }
 
             /* Metodo chamado caso ocorra alguma excecao */
@@ -164,6 +164,7 @@ public class StoneSDK extends CordovaPlugin {
             }
 
         });
+        callbackContext.success();
         activeApplicationProvider.execute();
     }
 
@@ -189,7 +190,7 @@ public class StoneSDK extends CordovaPlugin {
         System.out.println("arrayList: " + arrayList);
     }
 
-    private void transactionCancel(JSONArray data) throws JSONException  {
+    private void transactionCancel(JSONArray data, CallbackContext callbackContext) throws JSONException  {
         System.out.println("Opção Selecionada Cancel");
 
         String transactionCode = data.getString(0);
@@ -216,10 +217,11 @@ public class StoneSDK extends CordovaPlugin {
                 Toast.makeText(StoneSDK.this.cordova.getActivity(), "Um erro ocorreu durante o cancelamento com a transacao de id: " + transacionId, Toast.LENGTH_SHORT).show();
             }
         });
+        callbackContext.success();
         cancellationProvider.execute();
     }
 
-    private void transaction(JSONArray data) throws JSONException {
+    private void transaction(JSONArray data, CallbackContext callbackContext) throws JSONException {
 
         String amount = data.getString(0);
         System.out.println("getAmount: " + amount);
@@ -282,7 +284,7 @@ public class StoneSDK extends CordovaPlugin {
                 }
             }
         });
-
+        callbackContext.success();
         provider.execute();
     }
 
