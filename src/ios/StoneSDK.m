@@ -226,32 +226,35 @@
 
 - (void)transactionList:(CDVInvokedUrlCommand*)command {
 
-    NSArray *transactions = [STNTransactionListProvider listTransactions];
+    NSArray *transactionsList = [STNTransactionListProvider listTransactions];
+    
+    STNTransactionModel *transactionInfoProvider = [transactionsList objectAtIndex:0];
+    
+    NSMutableArray *msg = [NSMutableArray array];
+    
+    for (STNTransactionModel *transaction in transactionsList) {
+        // Tratamento do amount somente para exibição.
+        int centsValue = [transaction.amount intValue];
+        float realValue = centsValue*0.01;
+        NSString *amount = [NSString stringWithFormat:@"%.02f", realValue];
+        
+        // Tratamento do status.
+        NSString *shortStatus;
+        if ([transaction.statusString isEqual: @"Transação Aprovada"]) {
+            shortStatus = @"Aprovada";
+        } else if ([transaction.statusString isEqual:@"Transação Cancelada"]) {
+            shortStatus = @"Cancelada";
+        } else {
+            shortStatus = transaction.statusString;
+        }
+        
+        NSString * date = transactionInfoProvider.dateString;
+        
+        NSString *idTransaction = [NSString stringWithFormat: @"R$ %@ %@ %@", amount, shortStatus, date];
 
-    STNTransactionModel *transactionInfoProvider = [transactions objectAtIndex:0];
-    NSLog(@"transactionInfoProvider, %@", transactionInfoProvider);
-
-    // Tratamento do amount somente para exibição.
-    int centsValue = [transactionInfoProvider.amount intValue];
-    float realValue = centsValue*0.01;
-    NSString *amount = [NSString stringWithFormat:@"%.02f", realValue];
-
-    // Tratamento do status.
-    NSString *shortStatus;
-    if ([transactionInfoProvider.statusString isEqual: @"Transação Aprovada"]) {
-        shortStatus = @"Aprovada";
-    } else if ([transactionInfoProvider.statusString isEqual:@"Transação Cancelada"]) {
-        shortStatus = @"Cancelada";
-    } else {
-        shortStatus = transactionInfoProvider.statusString;
+        [msg addObject:idTransaction];
     }
-
-    NSString * date = transactionInfoProvider.dateString;
-
-    NSString *idTransaction = [NSString stringWithFormat: @"R$ %@\n%@\n%@", amount, shortStatus, date];
-
-    NSArray *msg = [NSArray arrayWithObjects:idTransaction, nil];
-
+    
     CDVPluginResult* result = [CDVPluginResult
                                resultWithStatus:CDVCommandStatus_OK
                                messageAsArray:msg];
@@ -260,11 +263,13 @@
 }
 
 - (void)transactionCancel:(CDVInvokedUrlCommand*)command {
-    NSArray *transactions = [STNTransactionListProvider listTransactions];
+    // NSArray *transactions = [STNTransactionListProvider listTransactions];
 
-    STNTransactionModel *transactionInfoProvider = [transactions objectAtIndex:0];
+    // STNTransactionModel *transactionInfoProvider = [transactions objectAtIndex:0];
 
-    [STNCancellationProvider cancelTransaction:transactionInfoProvider withBlock:^(BOOL succeeded, NSError *error) {
+    NSArray *transaction = [[command arguments] objectAtIndex:0];
+    print(transaction)
+    [STNCancellationProvider cancelTransaction:transaction withBlock:^(BOOL succeeded, NSError *error) {
         CDVPluginResult* result;
         if (succeeded) {
             NSString* msg = @"Transação cancelada!";
