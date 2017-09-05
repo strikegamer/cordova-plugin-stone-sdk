@@ -227,9 +227,6 @@
 - (void)transactionList:(CDVInvokedUrlCommand*)command {
 
     NSArray *transactionsList = [STNTransactionListProvider listTransactions];
-    
-    STNTransactionModel *transactionInfoProvider = [transactionsList objectAtIndex:0];
-    
     NSMutableArray *msg = [NSMutableArray array];
     
     for (STNTransactionModel *transaction in transactionsList) {
@@ -248,7 +245,7 @@
             shortStatus = transaction.statusString;
         }
         
-        NSString * date = transactionInfoProvider.dateString;
+        NSString *date = transaction.dateString;
         
         NSString *idTransaction = [NSString stringWithFormat: @"R$ %@ %@ %@", amount, shortStatus, date];
 
@@ -263,13 +260,14 @@
 }
 
 - (void)transactionCancel:(CDVInvokedUrlCommand*)command {
-    // NSArray *transactions = [STNTransactionListProvider listTransactions];
+    NSArray *transactions = [STNTransactionListProvider listTransactions];
+    NSString* indexTransactionCancel = [[command arguments] objectAtIndex:0];
+    NSString *transactionLastCharacter = [indexTransactionCancel substringFromIndex: [indexTransactionCancel length] - 1];
+    int value = [transactionLastCharacter integerValue];
 
-    // STNTransactionModel *transactionInfoProvider = [transactions objectAtIndex:0];
-
-    NSArray *transaction = [[command arguments] objectAtIndex:0];
-    print(transaction)
-    [STNCancellationProvider cancelTransaction:transaction withBlock:^(BOOL succeeded, NSError *error) {
+    STNTransactionModel *transactionInfoProvider = [transactions objectAtIndex:value];
+    
+    [STNCancellationProvider cancelTransaction:transactionInfoProvider withBlock:^(BOOL succeeded, NSError *error) {
         CDVPluginResult* result;
         if (succeeded) {
             NSString* msg = @"Transação cancelada!";
@@ -282,6 +280,7 @@
     }];
 
 }
+
 
 - (void)tablesDownload:(CDVInvokedUrlCommand*)command {
 
