@@ -3,7 +3,7 @@
     "name": "cordova-plugin-stone-sdk",
     "cordova_name": "Cordova Stone Plugin",
     "description": "Cordova wrapper for Stone Mobile SDK",
-    "issue": "https://github.com/igortrinidad/cordova-plugin-stone-sdk/issues",
+    "issue": "https://github.com/stone-payments/cordova-plugin-stone-sdk/issues",
     "license": "MIT",
     "author": {
         "name": "Stone",
@@ -18,7 +18,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/igortrinidad/cordova-plugin-stone-sdk.git"
+        "url": "git+https://github.com/stone-payments/cordova-plugin-stone-sdk.git"
     },
     "keywords": [
         "ecosystem:cordova",
