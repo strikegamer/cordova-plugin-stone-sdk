@@ -151,7 +151,10 @@ public class StoneSDK extends CordovaPlugin {
         final ActiveApplicationProvider activeApplicationProvider = new ActiveApplicationProvider(this.cordova.getActivity(), stoneCodeList);
         activeApplicationProvider.setDialogMessage("Ativando o aplicativo...");
         activeApplicationProvider.setDialogTitle("Aguarde");
-        activeApplicationProvider.setActivity(this.cordova.getActivity());
+        
+        //Essa linha estava gerando erro no build, porém não sei a necessidade dessa parte... Parece que já tem implementado acima...
+        //activeApplicationProvider.setActivity(this.cordova.getActivity());
+        
         activeApplicationProvider.setWorkInBackground(false); // informa se este provider ira rodar em background ou nao
         activeApplicationProvider.setConnectionCallback(new StoneCallbackInterface() {
 
