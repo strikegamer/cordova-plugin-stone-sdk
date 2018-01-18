@@ -71,7 +71,7 @@ public class StoneSDK extends CordovaPlugin {
                 stoneCodeValidation(data, callbackContext);
                 return true;
             } else {
-                Toast.makeText(StoneSDK.this.cordova.getActivity(), "StoneCode já cadastrado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(StoneSDK.this.cordova.getActivity(), "StoneCode ja cadastrado", Toast.LENGTH_SHORT).show();
                 return true;
             }
         } else if (action.equals(TABLES_DOWNLOAD)) {
@@ -127,10 +127,10 @@ public class StoneSDK extends CordovaPlugin {
 
         PinpadObject pinpad = new PinpadObject(name, macAddress, false);
 
-        // Passa o pinpad selecionado para o provider de conexão bluetooth.
+        // Passa o pinpad selecionado para o provider de conexao bluetooth.
         BluetoothConnectionProvider bluetoothConnectionProvider = new BluetoothConnectionProvider(StoneSDK.this.cordova.getActivity(), pinpad);
         bluetoothConnectionProvider.setDialogMessage("Criando conexao com o pinpad selecionado"); // Mensagem exibida do dialog.
-        bluetoothConnectionProvider.setWorkInBackground(false); // Informa que haverá um feedback para o usuário.
+        bluetoothConnectionProvider.setWorkInBackground(false); // Informa que havera um feedback para o usuario.
         bluetoothConnectionProvider.setConnectionCallback(new StoneCallbackInterface() {
 
             public void onSuccess() {
@@ -144,7 +144,7 @@ public class StoneSDK extends CordovaPlugin {
             }
 
         });
-        bluetoothConnectionProvider.execute(); // Executa o provider de conexão bluetooth.
+        bluetoothConnectionProvider.execute(); // Executa o provider de conexao bluetooth.
     }
 
     private void stoneCodeValidation(JSONArray data, final CallbackContext callbackContext) throws JSONException {
@@ -157,7 +157,7 @@ public class StoneSDK extends CordovaPlugin {
         activeApplicationProvider.setDialogMessage("Ativando o aplicativo...");
         activeApplicationProvider.setDialogTitle("Aguarde");
         
-        //Essa linha estava gerando erro no build, porém não sei a necessidade dessa parte... Parece que já tem implementado acima...
+        //Essa linha estava gerando erro no build, porem nao sei a necessidade dessa parte... Parece que ja tem implementado acima...
         //activeApplicationProvider.setActivity(this.cordova.getActivity());
         
         activeApplicationProvider.setWorkInBackground(false); // informa se este provider ira rodar em background ou nao
@@ -195,7 +195,7 @@ public class StoneSDK extends CordovaPlugin {
         // cria uma lista com todas as transacoes
         List<TransactionObject> transactionObjects = transactionDAO.getAllTransactionsOrderByIdDesc();
 
-        // exibe todas as transações (neste caso valor e status) para o usuario
+        // exibe todas as transacoes (neste caso valor e status) para o usuario
         JSONArray arrayList = new JSONArray();
 
         for (TransactionObject list : transactionObjects) {
@@ -211,18 +211,18 @@ public class StoneSDK extends CordovaPlugin {
     }
 
     private void transactionCancel(JSONArray data, final CallbackContext callbackContext) throws JSONException  {
-        System.out.println("Opção Selecionada Cancel");
+        System.out.println("Opcao Selecionada Cancel");
 
         String transactionCode = data.getString(0);
         System.out.println("optSelected: " + transactionCode);
 
-        // Pega o id da transação selecionada.
+        // Pega o id da transacao selecionada.
         String[] parts = transactionCode.split("_");
 
         String idOptSelected = parts[0];
         System.out.println("idOptSelected: " + idOptSelected);
 
-        //lógica do cancelamento
+        //lï¿½gica do cancelamento
         final int transacionId = Integer.parseInt(idOptSelected);
 
         final CancellationProvider cancellationProvider = new CancellationProvider(StoneSDK.this.cordova.getActivity(), transacionId, Stone.getUserModel(0));
@@ -283,7 +283,7 @@ public class StoneSDK extends CordovaPlugin {
 
         provider.setConnectionCallback(new StoneCallbackInterface() {
             public void onSuccess() {
-                Toast.makeText(StoneSDK.this.cordova.getActivity(), "Transação enviada com sucesso e salva no banco. Para acessar, use o TransactionDAO.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(StoneSDK.this.cordova.getActivity(), "Transacao enviada com sucesso e salva no banco. Para acessar, use o TransactionDAO.", Toast.LENGTH_SHORT).show();
             }
 
             public void onError() {
@@ -313,7 +313,7 @@ public class StoneSDK extends CordovaPlugin {
 
     private void tablesDownload(final CallbackContext callbackContext) throws JSONException  {
 
-        // IMPORTANTE: Mantenha esse provider na sua MAIN, pois ele irá baixar as tabelas AIDs e CAPKs dos servidores da Stone e sera utilizada quando necessário.
+        // IMPORTANTE: Mantenha esse provider na sua MAIN, pois ele ira baixar as tabelas AIDs e CAPKs dos servidores da Stone e sera utilizada quando necessï¿½rio.
         ApplicationCache applicationCache = new ApplicationCache(StoneSDK.this.cordova.getActivity());
         if (!applicationCache.checkIfHasTables()) {
             // Realiza processo de download das tabelas em sua totalidade.
@@ -332,14 +332,14 @@ public class StoneSDK extends CordovaPlugin {
             });
             downloadTablesProvider.execute();
         } else {
-            callbackContext.success("Não há tabelas para baixar, elas já estão atualizadas.");
+            callbackContext.success("Nao ha tabelas para baixar, elas ja estao atualizadas.");
         }
 
     }
 
     private void tablesUpdate(final CallbackContext callbackContext) throws JSONException  {
-        Toast.makeText(StoneSDK.this.cordova.getActivity(), "Tabela é atualizada na hora de fazer a transação.", Toast.LENGTH_SHORT).show();
-        callbackContext.success("Tabela é atualizada na hora de fazer a transação.");
+        Toast.makeText(StoneSDK.this.cordova.getActivity(), "Tabela e atualizada na hora de fazer a transacao.", Toast.LENGTH_SHORT).show();
+        callbackContext.success("Tabela e atualizada na hora de fazer a transacao.");
     }
 
 }
