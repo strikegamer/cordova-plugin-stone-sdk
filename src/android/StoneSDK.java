@@ -183,7 +183,7 @@ public class StoneSDK extends CordovaPlugin {
         activeApplicationProvider.execute();
     }
 
-    private void setEnvironment(JSONArray data) {
+    private void setEnvironment(JSONArray data) throws JSONException {
         String env = data.getString(0);
         Stone.setEnvironment(Environment.valueOf(env));
     }
