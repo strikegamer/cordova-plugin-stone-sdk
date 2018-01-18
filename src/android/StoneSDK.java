@@ -313,7 +313,7 @@ public class StoneSDK extends CordovaPlugin {
 
     private void tablesDownload(final CallbackContext callbackContext) throws JSONException  {
 
-        // IMPORTANTE: Mantenha esse provider na sua MAIN, pois ele ira baixar as tabelas AIDs e CAPKs dos servidores da Stone e sera utilizada quando necess�rio.
+        // IMPORTANTE: Mantenha esse provider na sua MAIN, pois ele ira baixar as tabelas AIDs e CAPKs dos servidores da Stone e sera utilizada quando necessario.
         ApplicationCache applicationCache = new ApplicationCache(StoneSDK.this.cordova.getActivity());
         if (!applicationCache.checkIfHasTables()) {
             // Realiza processo de download das tabelas em sua totalidade.
