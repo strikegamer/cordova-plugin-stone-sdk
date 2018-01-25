@@ -8,8 +8,8 @@ module.exports = {
   deviceSelected: function (arrayList, successCallback, errorCallback) {
     cordova.exec(successCallback, errorCallback, "StoneSDK", "deviceSelected", [arrayList]);
   },
-  transaction: function (amount, method, instalments, successCallback, errorCallback) {
-    cordova.exec(successCallback, errorCallback, "StoneSDK", "transaction", [amount, method, instalments]);
+  transaction: function (amount, method, instalments, success_message, successCallback, errorCallback) {
+    cordova.exec(successCallback, errorCallback, "StoneSDK", "transaction", [amount, method, instalments, success_message]);
   },
   transactionCancel: function (transactionCode, successCallback, errorCallback) {
     cordova.exec(successCallback, errorCallback, "StoneSDK", "transactionCancel", [transactionCode]);

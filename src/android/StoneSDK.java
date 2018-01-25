@@ -7,6 +7,7 @@ import android.widget.Toast;
 import org.apache.cordova.*;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +68,7 @@ public class StoneSDK extends CordovaPlugin {
             return true;
         } else if (action.equals(VALIDATION)) {
             List<UserModel> user = StoneStart.init(this.cordova.getActivity());
-            if (user == null)  {
+            if (user == null) {
                 stoneCodeValidation(data, callbackContext);
                 return true;
             } else {
@@ -156,16 +157,16 @@ public class StoneSDK extends CordovaPlugin {
         final ActiveApplicationProvider activeApplicationProvider = new ActiveApplicationProvider(this.cordova.getActivity(), stoneCodeList);
         activeApplicationProvider.setDialogMessage("Ativando o aplicativo...");
         activeApplicationProvider.setDialogTitle("Aguarde");
-        
+
         //Essa linha estava gerando erro no build, porem nao sei a necessidade dessa parte... Parece que ja tem implementado acima...
         //activeApplicationProvider.setActivity(this.cordova.getActivity());
-        
+
         activeApplicationProvider.setWorkInBackground(false); // informa se este provider ira rodar em background ou nao
         activeApplicationProvider.setConnectionCallback(new StoneCallbackInterface() {
 
-                /* Sempre que utilizar um provider, intancie esta Interface.
-                 * Ela ira lhe informar se o provider foi executado com sucesso ou nao
-                 */
+            /* Sempre que utilizar um provider, intancie esta Interface.
+             * Ela ira lhe informar se o provider foi executado com sucesso ou nao
+             */
 
             /* Metodo chamado se for executado sem erros */
             public void onSuccess() {
@@ -184,12 +185,8 @@ public class StoneSDK extends CordovaPlugin {
     }
 
     private void setEnvironment(JSONArray data) throws JSONException {
-        try {
-            String env = data.getString(0);
-            Stone.setEnvironment(Environment.valueOf(env));
-        } catch (JSONException e) {
-            e.printStackTrace();   
-        }  
+        String env = data.getString(0);
+        Stone.setEnvironment(Environment.valueOf(env));
     }
 
     private void transactionList(CallbackContext callbackContext) {
@@ -203,18 +200,30 @@ public class StoneSDK extends CordovaPlugin {
         JSONArray arrayList = new JSONArray();
 
         for (TransactionObject list : transactionObjects) {
-            String id = String.valueOf(list.getIdFromBase());
-            String amount = list.getAmount();
-            String status = String.valueOf(list.getTransactionStatus());
+            JSONObject obj = new JSONObject();
 
-            arrayList.put(id + "_" + amount + "_" + status);
+            try{
+                obj.put("id", String.valueOf(list.getIdFromBase()));
+                obj.put("amount",  list.getAmount());
+                obj.put("status",   String.valueOf(list.getTransactionStatus()));
+                obj.put("request_id",   String.valueOf(list.getRequestId()));
+                obj.put("date",   String.valueOf(list.getDate()));
+                obj.put("time",   String.valueOf(list.getTime()));
+                obj.put("card_brand",   String.valueOf(list.getCardBrand()));
+                obj.put("instalment_transaction",   String.valueOf(list.getInstalmentTransaction()));
+                obj.put("pinpad_used",   String.valueOf(list.getPinpadUsed()));
+                obj.put("transaction_type",   String.valueOf(list.getTypeOfTransactionEnum()));
 
+                arrayList.put(obj);
+
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
         }
         callbackContext.success(arrayList);
-        System.out.println("arrayList: " + arrayList);
     }
 
-    private void transactionCancel(JSONArray data, final CallbackContext callbackContext) throws JSONException  {
+    private void transactionCancel(JSONArray data, final CallbackContext callbackContext) throws JSONException {
         System.out.println("Opcao Selecionada Cancel");
 
         String transactionCode = data.getString(0);
@@ -249,6 +258,7 @@ public class StoneSDK extends CordovaPlugin {
     private void transaction(JSONArray data, final CallbackContext callbackContext) throws JSONException {
 
         String amount = data.getString(0);
+        final  String success_message = data.getString(3);
         System.out.println("getAmount: " + amount);
 
         // Cria o objeto de transacao. Usar o "GlobalInformations.getPinpadFromListAt"
@@ -283,11 +293,53 @@ public class StoneSDK extends CordovaPlugin {
 
         // Processo para envio da transacao.
         final TransactionProvider provider = new TransactionProvider(StoneSDK.this.cordova.getActivity(), stoneTransaction, Stone.getPinpadFromListAt(0));
+
         provider.setWorkInBackground(true);
 
         provider.setConnectionCallback(new StoneCallbackInterface() {
             public void onSuccess() {
-                Toast.makeText(StoneSDK.this.cordova.getActivity(), "Transacao enviada com sucesso e salva no banco. Para acessar, use o TransactionDAO.", Toast.LENGTH_SHORT).show();
+                // acessa todas as transacoes do banco de dados
+                TransactionDAO transactionDAO = new TransactionDAO(StoneSDK.this.cordova.getActivity());
+
+                // cria uma lista com todas as transacoes
+                List<TransactionObject> transactionObjects = transactionDAO.getAllTransactionsOrderByIdDesc();
+
+                // exibe todas as transacoes (neste caso valor e status) para o usuario
+                JSONArray arrayList = new JSONArray();
+
+                //Transforma a lista e objetos em json
+                for (TransactionObject list : transactionObjects) {
+
+                    JSONObject obj = new JSONObject();
+
+                    try{
+                        obj.put("id", String.valueOf(list.getIdFromBase()));
+                        obj.put("amount",  list.getAmount());
+                        obj.put("status",   String.valueOf(list.getTransactionStatus()));
+                        obj.put("request_id",   String.valueOf(list.getRequestId()));
+                        obj.put("date",   String.valueOf(list.getDate()));
+                        obj.put("time",   String.valueOf(list.getTime()));
+                        obj.put("card_brand",   String.valueOf(list.getCardBrand()));
+                        obj.put("instalment_transaction",   String.valueOf(list.getInstalmentTransaction()));
+                        obj.put("pinpad_used",   String.valueOf(list.getPinpadUsed()));
+                        obj.put("transaction_type",   String.valueOf(list.getTypeOfTransactionEnum()));
+
+                        arrayList.put(obj);
+
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+
+                //retorna a ultima transacao efetuada
+                try{
+                    callbackContext.success(arrayList.getJSONObject(0));
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+                //Mostra o toast com a mensagem personalizada
+                Toast.makeText(StoneSDK.this.cordova.getActivity(), success_message, Toast.LENGTH_SHORT).show();
             }
 
             public void onError() {
@@ -315,7 +367,7 @@ public class StoneSDK extends CordovaPlugin {
         provider.execute();
     }
 
-    private void tablesDownload(final CallbackContext callbackContext) throws JSONException  {
+    private void tablesDownload(final CallbackContext callbackContext) throws JSONException {
 
         // IMPORTANTE: Mantenha esse provider na sua MAIN, pois ele ira baixar as tabelas AIDs e CAPKs dos servidores da Stone e sera utilizada quando necessario.
         ApplicationCache applicationCache = new ApplicationCache(StoneSDK.this.cordova.getActivity());
@@ -329,6 +381,7 @@ public class StoneSDK extends CordovaPlugin {
                     Toast.makeText(StoneSDK.this.cordova.getActivity(), "Tabelas baixadas com sucesso.", Toast.LENGTH_SHORT).show();
                     callbackContext.success("Tabelas baixadas com sucesso.");
                 }
+
                 public void onError() {
                     Toast.makeText(StoneSDK.this.cordova.getActivity(), "Erro ao baixar tabelas.", Toast.LENGTH_SHORT).show();
                     callbackContext.error(downloadTablesProvider.getListOfErrors().toString());
@@ -341,7 +394,7 @@ public class StoneSDK extends CordovaPlugin {
 
     }
 
-    private void tablesUpdate(final CallbackContext callbackContext) throws JSONException  {
+    private void tablesUpdate(final CallbackContext callbackContext) throws JSONException {
         Toast.makeText(StoneSDK.this.cordova.getActivity(), "Tabela e atualizada na hora de fazer a transacao.", Toast.LENGTH_SHORT).show();
         callbackContext.success("Tabela e atualizada na hora de fazer a transacao.");
     }
