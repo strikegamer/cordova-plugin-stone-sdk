@@ -203,16 +203,36 @@ public class StoneSDK extends CordovaPlugin {
             JSONObject obj = new JSONObject();
 
             try{
-                obj.put("id", String.valueOf(list.getIdFromBase()));
+                obj.put("idFromBase", String.valueOf(list.getIdFromBase()));
                 obj.put("amount",  list.getAmount());
-                obj.put("status",   String.valueOf(list.getTransactionStatus()));
-                obj.put("request_id",   String.valueOf(list.getRequestId()));
+                obj.put("requestId",   String.valueOf(list.getRequestId()));
+                obj.put("emailSent",   String.valueOf(list.getEmailSent()));
+                obj.put("timeToPassTransaction",   String.valueOf(list.getTimeToPassTransaction()));
+                obj.put("initiatorTransactionKey",   String.valueOf(list.getInitiatorTransactionKey()));
+                obj.put("recipientTransactionIdentification",   String.valueOf(list.getRecipientTransactionIdentification()));
+                obj.put("cardHolderNumber",   String.valueOf(list.getCardHolderNumber()));
+                obj.put("cardHolderName",   String.valueOf(list.getCardHolderName()).trim());
                 obj.put("date",   String.valueOf(list.getDate()));
                 obj.put("time",   String.valueOf(list.getTime()));
-                obj.put("card_brand",   String.valueOf(list.getCardBrand()));
-                obj.put("instalment_transaction",   String.valueOf(list.getInstalmentTransaction()));
-                obj.put("pinpad_used",   String.valueOf(list.getPinpadUsed()));
-                obj.put("transaction_type",   String.valueOf(list.getTypeOfTransactionEnum()));
+                obj.put("aid",   String.valueOf(list.getAid()));
+                obj.put("arcq",   String.valueOf(list.getArcq()));
+                obj.put("authorizationCode",   String.valueOf(list.getAuthorizationCode()));
+                obj.put("iccRelatedData",   String.valueOf(list.getIccRelatedData()));
+                obj.put("transactionReference",   String.valueOf(list.getTransactionReference()));
+                obj.put("actionCode",   String.valueOf(list.getActionCode()));
+                obj.put("commandActionCode",   String.valueOf(list.getCommandActionCode()));
+                obj.put("pinpadUsed",   String.valueOf(list.getPinpadUsed()));
+                obj.put("userModelSale",   String.valueOf(list.getUserModelSale()));
+                obj.put("cne",   String.valueOf(list.getCne()));
+                obj.put("cvm",   String.valueOf(list.getCvm()));
+                obj.put("serviceCode",   String.valueOf(list.getServiceCode()));
+                obj.put("entryMode",   String.valueOf(list.getEntryMode()));
+                obj.put("cardBrand",   String.valueOf(list.getCardBrand()));
+                obj.put("instalmentTransaction",   String.valueOf(list.getInstalmentTransaction()));
+                obj.put("transactionStatus",   String.valueOf(list.getTransactionStatus()));
+                obj.put("instalmentType",   String.valueOf(list.getInstalmentType()));
+                obj.put("typeOfTransactionEnum",   String.valueOf(list.getTypeOfTransactionEnum()));
+                obj.put("cancellationDate",   String.valueOf(list.getCancellationDate()));
 
                 arrayList.put(obj);
 
@@ -313,16 +333,36 @@ public class StoneSDK extends CordovaPlugin {
                     JSONObject obj = new JSONObject();
 
                     try{
-                        obj.put("id", String.valueOf(list.getIdFromBase()));
+                        obj.put("idFromBase", String.valueOf(list.getIdFromBase()));
                         obj.put("amount",  list.getAmount());
-                        obj.put("status",   String.valueOf(list.getTransactionStatus()));
-                        obj.put("request_id",   String.valueOf(list.getRequestId()));
+                        obj.put("requestId",   String.valueOf(list.getRequestId()));
+                        obj.put("emailSent",   String.valueOf(list.getEmailSent()));
+                        obj.put("timeToPassTransaction",   String.valueOf(list.getTimeToPassTransaction()));
+                        obj.put("initiatorTransactionKey",   String.valueOf(list.getInitiatorTransactionKey()));
+                        obj.put("recipientTransactionIdentification",   String.valueOf(list.getRecipientTransactionIdentification()));
+                        obj.put("cardHolderNumber",   String.valueOf(list.getCardHolderNumber()));
+                        obj.put("cardHolderName",   String.valueOf(list.getCardHolderName()));
                         obj.put("date",   String.valueOf(list.getDate()));
                         obj.put("time",   String.valueOf(list.getTime()));
-                        obj.put("card_brand",   String.valueOf(list.getCardBrand()));
-                        obj.put("instalment_transaction",   String.valueOf(list.getInstalmentTransaction()));
-                        obj.put("pinpad_used",   String.valueOf(list.getPinpadUsed()));
-                        obj.put("transaction_type",   String.valueOf(list.getTypeOfTransactionEnum()));
+                        obj.put("aid",   String.valueOf(list.getAid()));
+                        obj.put("arcq",   String.valueOf(list.getArcq()));
+                        obj.put("authorizationCode",   String.valueOf(list.getAuthorizationCode()));
+                        obj.put("iccRelatedData",   String.valueOf(list.getIccRelatedData()));
+                        obj.put("transactionReference",   String.valueOf(list.getTransactionReference()));
+                        obj.put("actionCode",   String.valueOf(list.getActionCode()));
+                        obj.put("commandActionCode",   String.valueOf(list.getCommandActionCode()));
+                        obj.put("pinpadUsed",   String.valueOf(list.getPinpadUsed()));
+                        obj.put("userModelSale",   String.valueOf(list.getUserModelSale()));
+                        obj.put("cne",   String.valueOf(list.getCne()));
+                        obj.put("cvm",   String.valueOf(list.getCvm()));
+                        obj.put("serviceCode",   String.valueOf(list.getServiceCode()));
+                        obj.put("entryMode",   String.valueOf(list.getEntryMode()));
+                        obj.put("cardBrand",   String.valueOf(list.getCardBrand()));
+                        obj.put("instalmentTransaction",   String.valueOf(list.getInstalmentTransaction()));
+                        obj.put("transactionStatus",   String.valueOf(list.getTransactionStatus()));
+                        obj.put("instalmentType",   String.valueOf(list.getInstalmentType()));
+                        obj.put("typeOfTransactionEnum",   String.valueOf(list.getTypeOfTransactionEnum()));
+                        obj.put("cancellationDate",   String.valueOf(list.getCancellationDate()));
 
                         arrayList.put(obj);
 
