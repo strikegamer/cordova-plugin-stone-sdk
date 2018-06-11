@@ -33,26 +33,42 @@
 - (void)device:(CDVInvokedUrlCommand*)command {
 
     // Efetua a conexão com o pinpad
-    [STNPinPadConnectionProvider connectToPinpad:^(BOOL succeeded, NSError *error) {
-        if (succeeded) {
-            UIAlertView *success = [[UIAlertView alloc]
-                                    initWithTitle:@"Ativado!"
-                                    message:@"Pareado com sucesso!"
-                                    delegate:self
-                                    cancelButtonTitle:@"Ok"
-                                    otherButtonTitles:nil];
-            [success show];
-        } else {
+    STNPinpad *pinpad = [[[STNPinPadConnectionProvider new] listConnectedPinpads] objectAtIndex:0];
+    if(pinpad != NULL){
+        BOOL hasConnected = [[STNPinPadConnectionProvider new] selectPinpad:pinpad];
+        if (hasConnected)
+        {
+            [STNPinPadConnectionProvider connectToPinpad:^(BOOL succeeded, NSError *error) {
+                if (succeeded) {
+                    UIAlertView *success = [[UIAlertView alloc]
+                                            initWithTitle:@"Ativado!"
+                                            message:@"Pareado com sucesso!"
+                                            delegate:self
+                                            cancelButtonTitle:@"Ok"
+                                            otherButtonTitles:nil];
+                    [success show];
+                } else {
+                    NSString* msg = error.description;
+                    UIAlertView *fail = [[UIAlertView alloc]
+                                        initWithTitle:@"Oops!"
+                                        message:msg
+                                        delegate:self
+                                        cancelButtonTitle:@"Ok"
+                                        otherButtonTitles:nil];
+                    [fail show];
+                }
+            }];
+        }else{
             NSString* msg = error.description;
             UIAlertView *fail = [[UIAlertView alloc]
-                                 initWithTitle:@"Oops!"
-                                 message:msg
-                                 delegate:self
-                                 cancelButtonTitle:@"Ok"
-                                 otherButtonTitles:nil];
+                                initWithTitle:@"Não foi possivel conectar ao pinpad!"
+                                message:msg
+                                delegate:self
+                                cancelButtonTitle:@"Ok"
+                                otherButtonTitles:nil];
             [fail show];
         }
-    }];
+    }
 }
 
 - (void)transaction:(CDVInvokedUrlCommand*)command {
