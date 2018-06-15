@@ -62,8 +62,6 @@ A SDK do iOS pode ser encontrada [aqui](https://github.com/stone-pagamentos/sdk-
 - [stone_sdk.transaction](#transaction)
 - [stone_sdk.transactionList](#transactionlist)
 - [stone_sdk.transactionCancel](#transactioncancel)
-- [stone_sdk.tablesDownload](#tablesdownload)
-- [stone_sdk.tablesUpdate](#tablesupdate)
 
 
 ## validation
@@ -159,35 +157,5 @@ A função `transactionCancel` é responsável pelo cancelamento da transação 
 ### Parâmetros
 
 - __idTransaction_amountTransaction_statusTransaction__: Id da transação, valor transacionado e o seu status.
-- __success__: Callback de sucesso.
-- __failure__: Callback de falha.
-
-## tablesDownload
-
-Realiza o download das tabelas.
-
-    stone_sdk.tablesDownload(success, failure);
-
-### Descrição
-
-A função `tablesDownload` é responsável por realizar o download das tabelas. Se o download ocorrer com sucesso, a função irá chamar o callback de sucesso, caso contrário, será chamado o callback de falha.
-
-### Parâmetros
-
-- __success__: Callback de sucesso.
-- __failure__: Callback de falha.
-
-## tablesUpdate
-
-Realiza o carregamento das tabelas.
-
-    stone_sdk.tablesUpdate(success, failure);
-
-### Descrição
-
-A função `tablesUpdate` é responsável por realizar o carregamento das tabelas. Se o carregamento ocorrer com sucesso, a função irá chamar o callback de sucesso, caso contrário, será chamado o callback de falha.
-
-### Parâmetros
-
 - __success__: Callback de sucesso.
 - __failure__: Callback de falha.
