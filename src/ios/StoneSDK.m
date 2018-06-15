@@ -308,60 +308,15 @@
 
 
 - (void)tablesDownload:(CDVInvokedUrlCommand*)command {
-
-    [STNTableDownloaderProvider downLoadTables:^(BOOL succeeded, NSError *error) {
-        CDVPluginResult* result;
-        if (succeeded) {
-            NSString* msg = @"Download Realizado!";
-            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:msg];
-        } else {
-            NSString* msg = error.description;
-            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:msg];
-        }
-        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-    }];
-
+    CDVPluginResult* result;
+    NSString* msg = @"Download Realizado!";
+    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:msg];
 }
 
 - (void)tablesUpdate:(CDVInvokedUrlCommand*)command {
-
-    /* Antes de efetivar o carregamento das tabelas é necessário
-     que seja efetivado a conexão com o pinpad. */
-
-    [STNPinPadConnectionProvider connectToPinpad:^(BOOL succeeded, NSError *error) {
-        if (succeeded) {
-            UIAlertView *success = [[UIAlertView alloc]
-                                    initWithTitle:@"Ativado!"
-                                    message:@"Stone Code ativado com sucesso!"
-                                    delegate:self
-                                    cancelButtonTitle:@"Ok"
-                                    otherButtonTitles:nil];
-            [success show];
-        } else {
-            NSString* msg = error.description;
-            UIAlertView *fail = [[UIAlertView alloc]
-                                 initWithTitle:@"Oops!"
-                                 message:msg
-                                 delegate:self
-                                 cancelButtonTitle:@"Ok"
-                                 otherButtonTitles:nil];
-            [fail show];
-        }
-    }];
-
-    // Agora vamos fazer o carregamento das tabelas;
-    [STNTableLoaderProvider loadTables:^(BOOL succeeded, NSError *error) {
-        CDVPluginResult* result;
-        if (succeeded) {
-            NSString* msg = @"Tabelas atualizadas!";
-            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:msg];
-        } else {
-            NSString* msg = error.description;
-            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:msg];
-        }
-        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-    }];
-
+    CDVPluginResult* result;
+    NSString* msg = @"Tabelas atualizadas!";
+    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:msg];
 }
 
 @end
