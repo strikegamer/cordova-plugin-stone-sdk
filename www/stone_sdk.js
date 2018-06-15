@@ -20,10 +20,4 @@ module.exports = {
   validation: function (stoneCodeList, successCallback, errorCallback) {
     cordova.exec(successCallback, errorCallback, "StoneSDK", "validation", [stoneCodeList]);
   },
-  tablesDownload: function (successCallback, errorCallback) {
-    cordova.exec(successCallback, errorCallback, "StoneSDK", "tablesDownload", []);
-  },
-  tablesUpdate: function (successCallback, errorCallback) {
-    cordova.exec(successCallback, errorCallback, "StoneSDK", "tablesUpdate", []);
-  }
 };
