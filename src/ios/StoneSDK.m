@@ -306,17 +306,4 @@
 
 }
 
-
-- (void)tablesDownload:(CDVInvokedUrlCommand*)command {
-    CDVPluginResult* result;
-    NSString* msg = @"Download Realizado!";
-    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:msg];
-}
-
-- (void)tablesUpdate:(CDVInvokedUrlCommand*)command {
-    CDVPluginResult* result;
-    NSString* msg = @"Tabelas atualizadas!";
-    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:msg];
-}
-
 @end

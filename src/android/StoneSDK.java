@@ -45,8 +45,6 @@ public class StoneSDK extends CordovaPlugin {
     private static final String TRANSACTION_CANCEL = "transactionCancel";
     private static final String TRANSACTION_LIST = "transactionList";
     private static final String VALIDATION = "validation";
-    private static final String TABLES_DOWNLOAD = "tablesDownload";
-    private static final String TABLES_UPDATE = "tablesUpdate";
 
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
 
@@ -75,12 +73,6 @@ public class StoneSDK extends CordovaPlugin {
                 Toast.makeText(StoneSDK.this.cordova.getActivity(), "StoneCode ja cadastrado", Toast.LENGTH_SHORT).show();
                 return true;
             }
-        } else if (action.equals(TABLES_DOWNLOAD)) {
-            tablesDownload(callbackContext);
-            return true;
-        } else if (action.equals(TABLES_UPDATE)) {
-            tablesUpdate(callbackContext);
-            return true;
         } else if (action.equals(SET_ENVIRONMENT)) {
             setEnvironment(data);
             return true;
@@ -388,14 +380,6 @@ public class StoneSDK extends CordovaPlugin {
             }
         });
         provider.execute();
-    }
-
-    private void tablesDownload(final CallbackContext callbackContext) throws JSONException {
-        callbackContext.success("Download Realizado!");
-    }
-
-    private void tablesUpdate(final CallbackContext callbackContext) throws JSONException {
-        callbackContext.success("Tabelas Atualizadas!");
     }
 
 }
