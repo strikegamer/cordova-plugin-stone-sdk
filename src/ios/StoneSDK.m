@@ -35,44 +35,54 @@
     // Efetua a conexão com o pinpad
     NSArray *pinpads =[[STNPinPadConnectionProvider new] listConnectedPinpads];
     STNPinpad *pinpad;
-    if(pinpads.count > 0){
+    UIAlertView *alert;
+    NSString* msg = @"";
+    NSString* title = @"";
+
+    if(pinpads.count > 0) {
         pinpad = [pinpads objectAtIndex:0];
-    }
-    if(pinpad != NULL){
         BOOL hasConnected = [[STNPinPadConnectionProvider new] selectPinpad:pinpad];
-        if (hasConnected)
-        {
+        
+        if (hasConnected) {
             [STNPinPadConnectionProvider connectToPinpad:^(BOOL succeeded, NSError *error) {
                 if (succeeded) {
-                    UIAlertView *success = [[UIAlertView alloc]
-                                            initWithTitle:@"Ativado!"
-                                            message:@"Pareado com sucesso!"
-                                            delegate:self
-                                            cancelButtonTitle:@"Ok"
-                                            otherButtonTitles:nil];
-                    [success show];
+                    title = @"Ativado!";
+                    msg = @"Pareado com sucesso!";
                 } else {
-                    NSString* msg = error.description;
-                    UIAlertView *fail = [[UIAlertView alloc]
-                                        initWithTitle:@"Oops!"
-                                        message:msg
-                                        delegate:self
-                                        cancelButtonTitle:@"Ok"
-                                        otherButtonTitles:nil];
-                    [fail show];
+                    msg = @"Não foi possivel conectar ao pinpad!";
+                    title = @"Oops!";
                 }
+                
+                alert = [[UIAlertView alloc]
+                         initWithTitle: title
+                         message:msg
+                         delegate:self
+                         cancelButtonTitle:@"Ok"
+                         otherButtonTitles:nil];
             }];
-        }else{
-            NSString* msg = error.description;
-            UIAlertView *fail = [[UIAlertView alloc]
-                                initWithTitle:@"Não foi possivel conectar ao pinpad!"
-                                message:msg
-                                delegate:self
-                                cancelButtonTitle:@"Ok"
-                                otherButtonTitles:nil];
-            [fail show];
+        } else {
+            msg = @"Não foi possivel conectar ao pinpad!";
+            title = @"Oops!";
+            
+            alert = [[UIAlertView alloc]
+                         initWithTitle: title
+                         message:msg
+                         delegate:self
+                         cancelButtonTitle:@"Ok"
+                         otherButtonTitles:nil];
         }
+    } else {
+        msg = @"Não foi possivel conectar ao pinpad!";
+        title = @"Oops!";
+        
+        alert = [[UIAlertView alloc]
+                         initWithTitle: title
+                         message:msg
+                         delegate:self
+                         cancelButtonTitle:@"Ok"
+                         otherButtonTitles:nil];
     }
+    [alert show];
 }
 
 - (void)transaction:(CDVInvokedUrlCommand*)command {
