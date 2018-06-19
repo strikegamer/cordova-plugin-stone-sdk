@@ -33,7 +33,11 @@
 - (void)device:(CDVInvokedUrlCommand*)command {
 
     // Efetua a conexão com o pinpad
-    STNPinpad *pinpad = [[[STNPinPadConnectionProvider new] listConnectedPinpads] objectAtIndex:0];
+    NSArray *pinpads =[[STNPinPadConnectionProvider new] listConnectedPinpads];
+    STNPinpad *pinpad;
+    if(pinpads.count > 0){
+        pinpad = [pinpads objectAtIndex:0];
+    }
     if(pinpad != NULL){
         BOOL hasConnected = [[STNPinPadConnectionProvider new] selectPinpad:pinpad];
         if (hasConnected)
