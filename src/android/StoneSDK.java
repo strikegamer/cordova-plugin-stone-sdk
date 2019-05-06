@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import stone.application.StoneStart;
+
 import stone.application.enums.ErrorsEnum;
 import stone.application.enums.InstalmentTransactionEnum;
 import stone.application.enums.TypeOfTransactionEnum;
@@ -24,13 +24,12 @@ import stone.providers.ActiveApplicationProvider;
 import stone.providers.BluetoothConnectionProvider;
 import stone.providers.CancellationProvider;
 import stone.providers.TransactionProvider;
-import stone.user.UserModel;
-import stone.utils.GlobalInformations;
 import stone.utils.PinpadObject;
 import stone.utils.Stone;
-import stone.utils.StoneTransaction;
-import stone.cache.ApplicationCache;
 import stone.environment.Environment;
+import stone.application.StoneStart;
+import stone.user.UserModel;
+
 
 public class StoneSDK extends CordovaPlugin {
 
@@ -212,7 +211,7 @@ public class StoneSDK extends CordovaPlugin {
                 obj.put("actionCode",   String.valueOf(list.getActionCode()));
                 obj.put("commandActionCode",   String.valueOf(list.getCommandActionCode()));
                 obj.put("pinpadUsed",   String.valueOf(list.getPinpadUsed()));
-                obj.put("userModelSale",   String.valueOf(list.getUserModelSale()));
+                //obj.put("userModelSale",   String.valueOf(list.getUserModelSale()));
                 obj.put("cne",   String.valueOf(list.getCne()));
                 obj.put("cvm",   String.valueOf(list.getCvm()));
                 obj.put("serviceCode",   String.valueOf(list.getServiceCode()));
@@ -267,47 +266,54 @@ public class StoneSDK extends CordovaPlugin {
 
     private void transaction(JSONArray data, final CallbackContext callbackContext) throws JSONException {
 
+        Stone.setAppName("Box9");//FIXED UNTIL THE NEXT RELEASE
+
+        //Valor
         String amount = data.getString(0);
         final  String success_message = data.getString(3);
+        amount = amount.replace(",", "");
+        amount = amount.replace(".", "");
         System.out.println("getAmount: " + amount);
-
-        // Cria o objeto de transacao. Usar o "GlobalInformations.getPinpadFromListAt"
-        // significa que devera estar conectado com ao menos um pinpad, pois o metodo
-        // cria uma lista de conectados e conecta com quem estiver na posicao "0".
-        StoneTransaction stoneTransaction = new StoneTransaction(Stone.getPinpadFromListAt(0));
-
-        // A seguir deve-se popular o objeto.
-        stoneTransaction.setAmount(amount);
-        stoneTransaction.setEmailClient(null);
-        stoneTransaction.setRequestId(null);
-        stoneTransaction.setUserModel(Stone.getUserModel(0));
-
-        // Verifica a forma de pagamento selecionada.
-        String method = data.getString(1);
-        System.out.println("getMethod: " + method);
 
         // Numero de parcelas
         String instalments = data.getString(2);
         System.out.println("getInstalments: " + instalments);
 
+        // Verifica a forma de pagamento selecionada.
+        String method = data.getString(1);
+        System.out.println("getMethod: " + method);
+
+
+        //NEW TRANSACTION OBJECT
+        final TransactionObject transaction = new TransactionObject();
+        transaction.setAmount(amount);
+
         if (method.equals("DEBIT")) {
-            stoneTransaction.setInstalmentTransactionEnum(InstalmentTransactionEnum.getAt(0));
-            stoneTransaction.setTypeOfTransaction(TypeOfTransactionEnum.DEBIT);
+            transaction.setInstalmentTransaction(InstalmentTransactionEnum.getAt(0));
+            transaction.setTypeOfTransaction(TypeOfTransactionEnum.DEBIT);
+
+
         } else if (method.equals("CREDIT")) {
-            // Informa a quantidade de parcelas.
-            stoneTransaction.setInstalmentTransactionEnum(InstalmentTransactionEnum.valueOf(instalments));
-            stoneTransaction.setTypeOfTransaction(TypeOfTransactionEnum.CREDIT);
+            transaction.setTypeOfTransaction(TypeOfTransactionEnum.CREDIT);
+            transaction.setInstalmentTransaction(InstalmentTransactionEnum.valueOf(instalments));
+
         } else {
             System.out.println("Empty Payment Method");
         }
 
-        // Processo para envio da transacao.
-        final TransactionProvider provider = new TransactionProvider(StoneSDK.this.cordova.getActivity(), stoneTransaction, Stone.getPinpadFromListAt(0));
+        //Define se transação será feita com captura ou não.
+        transaction.setCapture(true);
 
-        provider.setWorkInBackground(true);
+        final TransactionProvider provider = new TransactionProvider(StoneSDK.this.cordova.getActivity().getApplicationContext(), transaction,  Stone.getUserModel(0),Stone.getPinpadFromListAt(0));
+
+//        provider.useDefaultUI(true);
+//        provider.setDialogTitle("Aguarde"); // Título do Dialog
+//        provider.setDialogMessage("Enviando..."); // Mensagem do Dialog
 
         provider.setConnectionCallback(new StoneCallbackInterface() {
+            @Override
             public void onSuccess() {
+                // Transação enviada com sucesso e salva no banco. Para acessar, use o TransactionDAO
                 // acessa todas as transacoes do banco de dados
                 TransactionDAO transactionDAO = new TransactionDAO(StoneSDK.this.cordova.getActivity());
 
@@ -342,7 +348,7 @@ public class StoneSDK extends CordovaPlugin {
                         obj.put("actionCode",   String.valueOf(list.getActionCode()));
                         obj.put("commandActionCode",   String.valueOf(list.getCommandActionCode()));
                         obj.put("pinpadUsed",   String.valueOf(list.getPinpadUsed()));
-                        obj.put("userModelSale",   String.valueOf(list.getUserModelSale()));
+                        //obj.put("userModelSale",   String.valueOf(list.getUserModelSale()));
                         obj.put("cne",   String.valueOf(list.getCne()));
                         obj.put("cvm",   String.valueOf(list.getCvm()));
                         obj.put("serviceCode",   String.valueOf(list.getServiceCode()));
@@ -371,13 +377,21 @@ public class StoneSDK extends CordovaPlugin {
                 //Mostra o toast com a mensagem personalizada
                 Toast.makeText(StoneSDK.this.cordova.getActivity(), success_message, Toast.LENGTH_SHORT).show();
             }
-
+//            @Override
+//            public void onStatusChanged(Action action) {
+//                // Nesse callback é retornado o próximo passo a ser executado no fluxo de pagamento
+//            }
+            @Override
             public void onError() {
+                // Erro na transação
                 Toast.makeText(StoneSDK.this.cordova.getActivity(), provider.getMessageFromAuthorize(), Toast.LENGTH_SHORT).show();
                 callbackContext.error(provider.getListOfErrors().toString());
             }
         });
+
         provider.execute();
+
+        //END NEW TRANSACTION OBJECT
     }
 
 }
